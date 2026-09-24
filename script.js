@@ -4,6 +4,8 @@ const map = L.map('map').setView([33.4484, -112.0740], 12);
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+let searchArea;
+
     // Temp Data
 const foodResources = [
     {
@@ -47,11 +49,13 @@ const foodResources = [
 ];
 
 // Markers per Resource
+const resourceMarkers = [];
+
 foodResources.forEach(resource => {
     const marker = L.marker([
         resource.latitude,
         resource.longitude
-    ]).addTo(map);
+    ]);
 
     marker.bindPopup(`
         <div class="location-card">
@@ -62,8 +66,18 @@ foodResources.forEach(resource => {
                 ${resource.city}, ${resource.state}, ${resource.zip}
             </p>
             <p class="service">${resource.service}</p>
+
+            <details>
+                <summary>More Information</summary>
+                <p>Resource Type: ${resource.type}</p>
+            </details>
         </div>
     `);
+
+    resourceMarkers.push({
+        marker: marker,
+        resource: resource
+    });
 });
 
 const searchForm = document.getElementById('location-search');
@@ -82,10 +96,21 @@ searchForm.addEventListener('submit', function(event) {
 
     searchMessage.textContent = `Searching...`;
 
+    resourceMarkers.forEach(item => {
+        map.removeLayer(item.marker);
+    });
+
     fetch(
         `https://nominatim.openstreetmap.org/search?postalcode=${zipCode}&countrycodes=us&format=json&addressdetails=1&limit=1`
     )
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Geocoding request failed: ${response.status}`);
+            }
+        
+            return response.json();
+        })
+
         .then(data => {
             if (data.length === 0) {
                 searchMessage.textContent = 'ZIP Code not found.';
@@ -99,13 +124,27 @@ searchForm.addEventListener('submit', function(event) {
                 return;
             }
 
-            const latitude = parseFloat(data[0].lat);
-            const longitude = parseFloat(data[0].lon);
+            const latitude = parseFloat(result.lat);
+            const longitude = parseFloat(result.lon);
 
             map.setView([latitude, longitude], 12);
 
+            if (searchArea) {
+                map.removeLayer(searchArea);
+            }
+                searchArea = L.circle([latitude, longitude], {
+                    radius: 5000
+                }).addTo(map);
+            
+            resourceMarkers.forEach(item => {
+                if (item.resource.zip === zipCode) {
+                    item.marker.addTo(map);
+                }
+            });
+
             searchMessage.textContent = `Location found: ${zipCode}`;
         })
+        
         .catch(error => {
             console.error('Geocoding error:', error);
             searchMessage.textContent = 'Could not find that location. Please try again.';
