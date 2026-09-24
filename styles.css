@@ -1,0 +1,57 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+}
+
+#map {
+    height: calc(100vh - 58px);
+    width: 100%;
+}
+
+.location-card {
+    width: 240px;
+}
+
+.location-card h2 {
+    margin: 0 0 6px;
+    font-size: 18px;
+}
+
+.location-name {
+    margin: 0 0 10px;
+    font-weight: bold;
+}
+
+.location-card p {
+    margin: 6px 0;
+}
+
+.location-card .service {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 20px;
+        padding: 12px;
+    }
+
+    #map {
+        height: calc(100vh - 47px);
+    }
+
+    .location-card {
+        width: 210px;
+    }
+}
