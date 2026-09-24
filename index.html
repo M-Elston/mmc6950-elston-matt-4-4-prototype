@@ -14,6 +14,21 @@
 <body>
 <h1>Food Finder Prototype</h1>
 
+<form id="location-search">
+    <label for="zip-code">Search by ZIP Code:</label>
+    <input
+        type="text"
+        id="zip-code"
+        name="zip-code"
+        inputmode="numeric"
+        maxlength="5"
+        placeholder="ex. 85331"
+    >
+    <button type="submit">Search</button>
+</form>
+
+<div id="search-message"></div>
+
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
