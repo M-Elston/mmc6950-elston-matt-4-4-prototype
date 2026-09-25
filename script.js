@@ -5,6 +5,7 @@ const map = L.map('map').setView([33.4484, -112.0740], 12);
     }).addTo(map);
 
 let searchArea;
+let searchedZip = '';
 
     // Temp Data
 const foodResources = [
@@ -18,7 +19,48 @@ const foodResources = [
         latitude: 33.4806,
         longitude: -112.1253,
         type: "Food Bank",
-        service: "Food Assistance Available"
+        service: "Food Assistance Available",
+        hours: "Placeholder",
+        contact: "Placeholder",
+        availability: "Placeholder",
+        eligibility: "Placeholder",
+        additionalInfo: "Placeholder"
+    },
+
+    {
+        name: "Placeholder Food Pantry",
+        locationName: "Temp Test Location",
+        address: "Placeholder Address",
+        city: "Phoenix",
+        state: "AZ",
+        zip: "85017",
+        latitude: 33.4650,
+        longitude: -112.1100,
+        type: "Food Pantry",
+        service: "Placeholder - Food Assistance",
+        hours: "Placeholder",
+        contact: "Placeholder",
+        availability: "Placeholder",
+        eligibility: "Placeholder",
+        additionalInfo: "Temp Testing Resource - Not a Real Listing."
+    },
+
+    {
+        name: "Placeholder Community Meal",
+        locationName: "Temp Test Location",
+        address: "Placeholder Address",
+        city: "Phoenix",
+        state: "AZ",
+        zip: "85017",
+        latitude: 33.4950,
+        longitude: -112.1400,
+        type: "Community Meal",
+        service: "Placeholder - Meal Service",
+        hours: "Placeholder",
+        contact: "Placeholder",
+        availability: "Placeholder",
+        eligibility: "Placeholder",
+        additionalInfo: "Temp Testing Resource - Not a Real Listing."
     },
 
     {
@@ -31,7 +73,12 @@ const foodResources = [
         latitude: 33.7920,
         longitude: -111.9830,
         type: "Food Pantry",
-        service: "Food Assistance Available" 
+        service: "Food Assistance Available",
+        hours: "Placeholder",
+        contact: "Placeholder",
+        availability: "Placeholder",
+        eligibility: "Placeholder",
+        additionalInfo: "Placeholder" 
     },
 
     {
@@ -44,7 +91,12 @@ const foodResources = [
         latitude: 33.6390,
         longitude: -112.3340,
         type: "Food Bank",
-        service: "Food Assistance Available" 
+        service: "Food Assistance Available",
+        hours: "Placeholder",
+        contact: "Placeholder",
+        availability: "Placeholder",
+        eligibility: "Placeholder",
+        additionalInfo: "Placeholder" 
     }
 ];
 
@@ -66,10 +118,15 @@ foodResources.forEach(resource => {
                 ${resource.city}, ${resource.state}, ${resource.zip}
             </p>
             <p class="service">${resource.service}</p>
+            <p><strong>Hours:</strong> ${resource.hours}</p>
+            <p><strong>Contact:</strong> ${resource.contact}</p>
+            <p><strong>Availability:</strong> ${resource.availability}</p>
 
             <details>
                 <summary>More Information</summary>
-                <p>Resource Type: ${resource.type}</p>
+                <p><strong>Resource Type:</strong> ${resource.type}</p>
+                <p><strong>Eligibility:</strong> ${resource.eligibility}</p>
+                <p>${resource.additionalInfo}</p>
             </details>
         </div>
     `);
@@ -83,9 +140,31 @@ foodResources.forEach(resource => {
 const searchForm = document.getElementById('location-search');
 const zipInput = document.getElementById('zip-code');
 const searchMessage = document.getElementById('search-message');
+const filterCheckboxes = document.querySelectorAll('#resource-filters input[type="checkbox"]');
+
+function updateResourceMarkers() {
+    const selectedTypes = Array.from(filterCheckboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
+    
+    resourceMarkers.forEach(item => {
+        const matchesZip = item.resource.zip === searchedZip;
+        const matchesType = selectedTypes.length === 0 ||
+            selectedTypes.includes(item.resource.type);
+        
+        if (matchesZip && matchesType) {
+            item.marker.addTo(map);
+        } else {
+            map.removeLayer(item.marker);
+        }
+    });
+}
 
 searchForm.addEventListener('submit', function(event) {
     event.preventDefault();
+
+    zipInput.setSelectionRange(0, 0);
+    zipInput.blur();
 
     const zipCode = zipInput.value.trim();
 
@@ -127,7 +206,9 @@ searchForm.addEventListener('submit', function(event) {
             const latitude = parseFloat(result.lat);
             const longitude = parseFloat(result.lon);
 
-            map.setView([latitude, longitude], 12);
+            searchedZip = zipCode;
+
+            map.flyTo([latitude, longitude], 12);
 
             if (searchArea) {
                 map.removeLayer(searchArea);
@@ -136,11 +217,9 @@ searchForm.addEventListener('submit', function(event) {
                     radius: 5000
                 }).addTo(map);
             
-            resourceMarkers.forEach(item => {
-                if (item.resource.zip === zipCode) {
-                    item.marker.addTo(map);
-                }
-            });
+            updateResourceMarkers();
+
+            filterCheckboxes[0].focus();
 
             searchMessage.textContent = `Location found: ${zipCode}`;
         })
@@ -149,4 +228,8 @@ searchForm.addEventListener('submit', function(event) {
             console.error('Geocoding error:', error);
             searchMessage.textContent = 'Could not find that location. Please try again.';
         });
+});
+
+filterCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', updateResourceMarkers);
 });

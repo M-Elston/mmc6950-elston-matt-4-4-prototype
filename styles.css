@@ -41,6 +41,10 @@ h1 {
     font-weight: bold;
 }
 
+.location-card details summary {
+    text-align: center;
+}
+
 .location-card summary {
     cursor: pointer;
 }
