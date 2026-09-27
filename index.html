@@ -12,43 +12,49 @@
 </head>
 
 <body>
-<h1>Food Finder Prototype</h1>
 
-<form id="location-search">
-    <label for="zip-code">Search by ZIP Code:</label>
-    <input
-        type="text"
-        id="zip-code"
-        name="zip-code"
-        inputmode="numeric"
-        maxlength="5"
-        placeholder="ex. 85331"
-    >
-    <button type="submit">Search</button>
-</form>
+<header class="header">
+    <h1>Food Finder Prototype</h1>
 
-<div id="search-message"></div>
+    <form id="location-search">
+        <label for="zip-code">Search by ZIP Code:</label>
+        <input
+            type="text"
+            id="zip-code"
+            name="zip-code"
+            inputmode="numeric"
+            maxlength="5"
+            placeholder="ex. 85331"
+        >
+        <button type="submit">Search</button>
+    </form>
+</header>
 
-<div id="resource-filters">
-    <p>Filter by Resource Type:</p>
-    <label>
-        <input type="checkbox" value="Food Bank">Food Bank
-    </label>
+<main class="map-container">
 
-    <label>
-        <input type="checkbox" value="Food Pantry">Food Pantry
-    </label>
+    <div id="map"></div>
 
-    <label>
-        <input type="checkbox" value="Community Meal">Community Meal
-    </label>
+    <div id="resource-filters">
+        <p>Filter by Resource Type:</p>
+        <label>
+            <input type="checkbox" value="Food Bank">Food Bank
+        </label>
 
-    <label>
-        <input type="checkbox" value="Food Distribution">Food Distribution
-    </label>
-</div>
+        <label>
+            <input type="checkbox" value="Food Pantry">Food Pantry
+        </label>
 
-<div id="map"></div>
+        <label>
+            <input type="checkbox" value="Community Meal">Community Meal
+        </label>
+
+        <label>
+            <input type="checkbox" value="Food Distribution">Food Distribution
+        </label>
+        
+        <div id="search-message"></div>
+    </div>
+</main>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="

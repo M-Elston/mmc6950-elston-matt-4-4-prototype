@@ -1,13 +1,56 @@
 const map = L.map('map').setView([33.4484, -112.0740], 12);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+// Layer 1: detailed map
+const detailedMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
 let searchArea;
 let searchedZip = '';
+let searchMask;
 
-    // Temp Data
+function createSearchMask(latitude, longitude, radius) {
+    
+    const points = [];
+    const numberOfPoints = 64;
+
+    for (let i = 0; i < numberOfPoints; i++) {
+        const angle = (i / numberOfPoints) * 2 * Math.PI;
+
+        const lat = latitude + (radius / 111320) * Math.cos(angle);
+        const lon = longitude + (radius / (111320 * Math.cos(latitude * Math.PI / 180))) * Math.sin(angle);
+        
+        points.push([lat, lon]);
+    }
+
+    const outerBounds = [
+        [90, -180],
+        [90, 180],
+        [-90, 180],
+        [-90, -180]
+    ];
+
+    const newSearchMask = L.polygon(
+        [outerBounds, points],
+        {
+            fillColor: '#555555',
+            fillOpacity: 0.45,
+            stroke: false,
+            interactive: false
+        }
+    ).addTo(map);
+
+    newSearchMask.bringToFront();
+
+    if (searchMask) {
+        map.removeLayer(searchMask);
+    }
+
+    searchMask = newSearchMask;
+}
+
+// Temp Data
 const foodResources = [
     {
         name: "St. Mary's Food Bank",
@@ -129,7 +172,11 @@ foodResources.forEach(resource => {
                 <p>${resource.additionalInfo}</p>
             </details>
         </div>
-    `);
+    `, {
+        autoPan: true,
+        autoPanPaddingTopLeft: [20, 140],
+        autoPanPaddingBottomRight: [20, 20]
+    });
 
     resourceMarkers.push({
         marker: marker,
@@ -208,18 +255,24 @@ searchForm.addEventListener('submit', function(event) {
 
             searchedZip = zipCode;
 
-            map.flyTo([latitude, longitude], 12);
-
             if (searchArea) {
                 map.removeLayer(searchArea);
             }
-                searchArea = L.circle([latitude, longitude], {
-                    radius: 5000
+
+            searchArea = L.circle([latitude, longitude], {
+                    radius: 5000,
+                    fill: false,
+                    color: '#666666',
+                    weight: 2
                 }).addTo(map);
-            
+                      
             updateResourceMarkers();
 
-            filterCheckboxes[0].focus();
+            map.flyTo([latitude, longitude], 12);
+
+            map.once('moveend', function() {
+                createSearchMask(latitude, longitude, 5000);
+            });
 
             searchMessage.textContent = `Location found: ${zipCode}`;
         })

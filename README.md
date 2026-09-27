@@ -4,7 +4,7 @@
 - Users search AZ ZIP Code, explore matching resources on the map, select a resource marker, review its information card.
 - Resource data remains temporary and hardcoded for prototype development
 - Dynamic resource retrieval has not been implemented yet
-- Search area results temporarily approximated to 5,000km radius of ZIP Codes
+- Search area results temporarily approximated to 5km radius of ZIP Codes
 
 ## Progress
 
@@ -15,7 +15,9 @@
 - Added temp, unconfirmed, resources (for testing)
 - Added data fields to cards
 
-### Location Search
+### UI & Layout
+
+#### Location Search
 - Added ZIP Code search form
 - Added 5-digit ZIP Code validation
 - Added [Nominatim](https://nominatim.openstreetmap.org/) geocoding for ZIP searches
@@ -25,8 +27,11 @@
 - Added marker toggling for searched ZIP Code results
 - Added visual search area circle
 - Added animated map repositioning via Leaflet ```flyTo```
+- Added map dimming/spotlight effect around ZIP Code location circle
+- Retouched search-area visualization (will style later)
+- Ensured resource markers remain visible when map is dimmed
 
-### Resource Markers & Cards
+#### Resource Markers & Cards
 - Added dynamic marker generation from resource array
 - Added marker popups
 - Added resource name & location
@@ -36,8 +41,16 @@
 - Added resource type & additional info to expandable section
 - Added "Placeholder" text to resource fields pending later verification
 
-### Resource Filtering
+#### Resource Filtering
 - Added JavaScript filters by resource type
 - Combined ZIP Code and resource filtering so markers match both conditions where applicable
 - Added temp resources (placeholders) to test/verify filtering behavior within 85017
 - Added filter focus handling
+
+#### Stylization
+- Compacted header section to maintain map-dominance
+- Styled temp logo & ZIP Code search according to covnention
+- Relocated Resource Filtering and Messaging as a floating overlay
+- Integrated Messaging into Filter panel
+- Added responsive styling for smaller screens
+- Added and explored automatic map panning to improve popup card visibility (will need to return to this in future developement)
