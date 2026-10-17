@@ -1,0 +1,25 @@
+{
+  "name": "mmc6950-elston-matt-4-4-prototype",
+  "version": "1.0.0",
+  "description": "- Users search AZ ZIP Code, explore matching resources on the map, select a resource marker, review its information card.\r - Resource data remains temporary and hardcoded for prototype development\r - Dynamic resource retrieval has not been implemented yet\r - Search area results temporarily approximated to 5km radius of ZIP Codes",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/M-Elston/mmc6950-elston-matt-4-4-prototype.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/M-Elston/mmc6950-elston-matt-4-4-prototype/issues"
+  },
+  "homepage": "https://github.com/M-Elston/mmc6950-elston-matt-4-4-prototype#readme",
+  "dependencies": {
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "mongodb": "^7.7.0"
+  }
+}

@@ -50,155 +50,162 @@ function createSearchMask(latitude, longitude, radius) {
     searchMask = newSearchMask;
 }
 
-// Temp Data
-const foodResources = [
-    {
-        name: "St. Mary's Food Bank",
-        locationName: "Phoenix Neighborhood Food Center",
-        address: "3131 W. Thomas Rd.",
-        city: "Phoenix",
-        state: "AZ",
-        zip: "85017",
-        latitude: 33.4806,
-        longitude: -112.1253,
-        type: "Food Bank",
-        service: "Food Assistance Available",
-        hours: "Placeholder",
-        contact: "Placeholder",
-        availability: "Placeholder",
-        eligibility: "Placeholder",
-        additionalInfo: "Placeholder"
-    },
+let foodResources = [];
 
-    {
-        name: "Placeholder Food Pantry",
-        locationName: "Temp Test Location",
-        address: "Placeholder Address",
-        city: "Phoenix",
-        state: "AZ",
-        zip: "85017",
-        latitude: 33.4650,
-        longitude: -112.1100,
-        type: "Food Pantry",
-        service: "Placeholder - Food Assistance",
-        hours: "Placeholder",
-        contact: "Placeholder",
-        availability: "Placeholder",
-        eligibility: "Placeholder",
-        additionalInfo: "Temp Testing Resource - Not a Real Listing."
-    },
+async function loadFoodResources() {
+    try {
+        const response = await fetch('/api/resources');
 
-    {
-        name: "Placeholder Community Meal",
-        locationName: "Temp Test Location",
-        address: "Placeholder Address",
-        city: "Phoenix",
-        state: "AZ",
-        zip: "85017",
-        latitude: 33.4950,
-        longitude: -112.1400,
-        type: "Community Meal",
-        service: "Placeholder - Meal Service",
-        hours: "Placeholder",
-        contact: "Placeholder",
-        availability: "Placeholder",
-        eligibility: "Placeholder",
-        additionalInfo: "Temp Testing Resource - Not a Real Listing."
-    },
+        if (!response.ok) {
+            throw new Error(`API request failed: ${response.status}`);
+        }
 
-    {
-        name: "Foothills Food Bank",
-        locationName: "Foothills Food Bank",
-        address: "6038 E. Hidden Valley Dr.",
-        city: "Cave Creek",
-        state: "AZ",
-        zip: "85331",
-        latitude: 33.7920,
-        longitude: -111.9830,
-        type: "Food Pantry",
-        service: "Food Assistance Available",
-        hours: "Placeholder",
-        contact: "Placeholder",
-        availability: "Placeholder",
-        eligibility: "Placeholder",
-        additionalInfo: "Placeholder" 
-    },
+        const data = await response.json();
 
-    {
-        name: "St. Mary's Food Bank",
-        locationName: "Surprise Resource Center",
-        address: "13050 W. Elm Street",
-        city: "Surprise",
-        state: "AZ",
-        zip: "85378",
-        latitude: 33.6390,
-        longitude: -112.3340,
-        type: "Food Bank",
-        service: "Food Assistance Available",
-        hours: "Placeholder",
-        contact: "Placeholder",
-        availability: "Placeholder",
-        eligibility: "Placeholder",
-        additionalInfo: "Placeholder" 
+        foodResources = data.map(resource => {
+            const address = resource.Address || '';
+            const zipMatch = address.match(/\b\d{5}\b/);
+
+            return {
+                name: resource.Name || 'Unnamed Resource',
+                locationName: resource.Name || '',
+                address: address,
+                city: resource.City || '',
+                state: 'AZ',
+                zip: zipMatch ? zipMatch[0] : '',
+                latitude: resource.latitude,
+                longitude: resource.longitude,
+                type: resource.Type || 'Other',
+                service: '',
+                hours: 'Not provided',
+                contact: resource['Phone Number'] || 'Not provided',
+                availability: 'Contact resource for details',
+                eligibility: 'Contact resource for details',
+                additionalInfo: resource.Website || ''
+            };
+        });
+
+        console.log(`Loaded ${foodResources.length} food resources.`);
+    } catch (error) {
+        console.error('Could not load food resources:', error);
+        searchMessage.textContent = 'Could not load food resources. Please refresh the page.';
     }
-];
+}
 
 // Markers per Resource
 const resourceMarkers = [];
 
-foodResources.forEach(resource => {
-    const marker = L.marker([
-        resource.latitude,
-        resource.longitude
-    ]);
+function createResourceMarkers() {
+    foodResources.forEach(resource => {
+        const marker = L.marker([
+            resource.latitude,
+            resource.longitude
+        ]);
 
-    marker.bindPopup(`
-        <div class="location-card">
-            <h2>${resource.name}</h2>
-            <p class="location-name">${resource.locationName}</p>
-            <p>
-                ${resource.address}<br>
-                ${resource.city}, ${resource.state}, ${resource.zip}
-            </p>
-            <p class="service">${resource.service}</p>
-            <p><strong>Hours:</strong> ${resource.hours}</p>
-            <p><strong>Contact:</strong> ${resource.contact}</p>
-            <p><strong>Availability:</strong> ${resource.availability}</p>
+        marker.bindPopup(`
+            <div class="location-card">
+                <h2>${resource.name}</h2>
+                <p class="location-name">${resource.locationName}</p>
+                <p>
+                    ${resource.address}<br>
+                    ${resource.city}, ${resource.state} ${resource.zip}
+                </p>
+                <p class="service">${resource.service}</p>
+                <p><strong>Hours:</strong> ${resource.hours}</p>
+                <p><strong>Contact:</strong> ${resource.contact}</p>
+                <p><strong>Availability:</strong> ${resource.availability}</p>
 
-            <details>
-                <summary>More Information</summary>
-                <p><strong>Resource Type:</strong> ${resource.type}</p>
-                <p><strong>Eligibility:</strong> ${resource.eligibility}</p>
-                <p>${resource.additionalInfo}</p>
-            </details>
-        </div>
-    `, {
-        autoPan: true,
-        autoPanPaddingTopLeft: [20, 140],
-        autoPanPaddingBottomRight: [20, 20]
+                <details>
+                    <summary>More Information</summary>
+                    <p><strong>Resource Type:</strong> ${resource.type}</p>
+                    <p><strong>Eligibility:</strong> ${resource.eligibility}</p>
+                    <p>${resource.additionalInfo}</p>
+                </details>
+            </div>
+        `, {
+            autoPan: true,
+            autoPanPaddingTopLeft: [20, 140],
+            autoPanPaddingBottomRight: [20, 20]
+        });
+
+        resourceMarkers.push({
+            marker: marker,
+            resource: resource
+        });
     });
-
-    resourceMarkers.push({
-        marker: marker,
-        resource: resource
-    });
-});
+}
 
 const searchForm = document.getElementById('location-search');
 const zipInput = document.getElementById('zip-code');
 const searchMessage = document.getElementById('search-message');
+const clearSearchButton = document.getElementById('clear-search');
 const filterCheckboxes = document.querySelectorAll('#resource-filters input[type="checkbox"]');
+
+function getDistanceKm(lat1, lon1, lat2, lon2) {
+    const earthRadius = 6371;
+    const toRadians = degrees => degrees * Math.PI / 180;
+
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) ** 2;
+
+    return earthRadius * 2 * Math.atan2(
+        Math.sqrt(a),
+        Math.sqrt(1 - a)
+    );
+}
+
+function getResourceCategories(type) {
+    const text = (type || '').toLowerCase();
+    const categories = [];
+
+    if (text.includes('food bank')) {
+        categories.push('Food Bank');
+    }
+
+    if (text.includes('food pantry') || text.includes('food bank/pantry')) {
+        categories.push('Food Pantry');
+    }
+
+    if (
+        text.includes('community meal') ||
+        text.includes('dinner service') ||
+        text.includes('hot meal service') ||
+        text.includes('soup kitchen')
+    ) {
+        categories.push('Community Meal');
+    }
+
+    if (text.includes('food distribution') || text.includes('food box')) {
+        categories.push('Food Distribution');
+    }
+
+    return categories;
+}
 
 function updateResourceMarkers() {
     const selectedTypes = Array.from(filterCheckboxes)
         .filter(checkbox => checkbox.checked)
         .map(checkbox => checkbox.value);
-    
+
     resourceMarkers.forEach(item => {
-        const matchesZip = item.resource.zip === searchedZip;
+        const matchesZip = !searchArea || getDistanceKm(
+            searchArea.getLatLng().lat,
+            searchArea.getLatLng().lng,
+            item.resource.latitude,
+            item.resource.longitude
+        ) <= 5;
+
         const matchesType = selectedTypes.length === 0 ||
-            selectedTypes.includes(item.resource.type);
-        
+            getResourceCategories(item.resource.type).some(category =>
+                selectedTypes.includes(category)
+            );
+
         if (matchesZip && matchesType) {
             item.marker.addTo(map);
         } else {
@@ -285,4 +292,27 @@ searchForm.addEventListener('submit', function(event) {
 
 filterCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', updateResourceMarkers);
+});
+
+clearSearchButton.addEventListener('click', function() {
+    searchedZip = '';
+    zipInput.value = '';
+    searchMessage.textContent = '';
+
+    if (searchArea) {
+        map.removeLayer(searchArea);
+        searchArea = null;
+    }
+
+    if (searchMask) {
+        map.removeLayer(searchMask);
+        searchMask = null;
+    }
+
+    updateResourceMarkers();
+});
+
+loadFoodResources().then(() => {
+    createResourceMarkers();
+    updateResourceMarkers();
 });
