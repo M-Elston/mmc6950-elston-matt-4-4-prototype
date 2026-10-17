@@ -87,3 +87,6 @@
 - Updated filters to database type descriptions
 - Updated map to display all markers on load-up and after clearing search (depending on filter selection)
 - Tested functionality and flow
+
+### Deployment
+- Deployed successfully to Vercel
