@@ -4,6 +4,7 @@
   "description": "- Users search AZ ZIP Code, explore matching resources on the map, select a resource marker, review its information card.\r - Resource data remains temporary and hardcoded for prototype development\r - Dynamic resource retrieval has not been implemented yet\r - Search area results temporarily approximated to 5km radius of ZIP Codes",
   "main": "script.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
