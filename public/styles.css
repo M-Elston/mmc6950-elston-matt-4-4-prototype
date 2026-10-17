@@ -1,0 +1,191 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* Header */
+
+.header {
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    z-index: 1001;
+}
+
+.header h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+}
+
+/* Search */
+
+#location-search {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#location-search label {
+    font-size: 14px;
+}
+
+#zip-code {
+    width: 95px;
+    padding: 7px 8px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#location-search button {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: green;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#location-search button:hover {
+    background-color: darkgreen;
+}
+
+/* Search Message */
+
+ #search-message {
+        margin-top: 8px;
+        padding-top: 6px;
+        border-top: 1px solid #ddd;
+        font-size: 13px;
+    }
+
+/* Map */
+
+.map-container {
+    position: relative;
+    height: calc(100vh - 58px);
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+/* Filters */
+
+#resource-filters {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 10px 16px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+#resource-filters p {
+    margin: 0 0 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Resource Cards */
+
+.location-card {
+    width: 240px;
+}
+
+.location-card h2 {
+    margin: 0 0 6px;
+    font-size: 18px;
+}
+
+.location-name {
+    margin: 0 0 10px;
+    font-weight: bold;
+}
+
+.location-card p {
+    margin: 6px 0;
+}
+
+.location-card .service {
+    color: green;
+    font-weight: bold;
+}
+
+.location-card details summary {
+    text-align: center;
+}
+
+.location-card summary {
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    
+    .header {
+        height: 52px;
+        padding: 6px 10px;
+    }
+
+    .header h1 {
+        font-size: 19px;
+    }
+
+    #location-search label {
+        display: none;
+    }
+
+    #zip-code {
+        width: 78px;
+        padding: 6px;
+        font-size: 13px;
+    }
+
+    #location-search button {
+        padding: 6px 9px;
+        font-size: 13px;
+    }
+
+    .map-container {
+        height: calc(100vh - 52px);
+    }
+    
+    #resource-filters {
+        top: 10px;
+        width: calc(100% - 20%);
+        padding: 9px 8px;
+    }
+
+    #resource-filters p {
+        margin-bottom: 6px;
+        font-size: 13px;
+    }
+
+    #resource-filters label {
+        display: inline-block;
+        margin: 3px 4px;
+        font-size: 12px;
+    }
+
+    .location-card {
+        width: 210px;
+    }
+}
