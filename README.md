@@ -90,3 +90,57 @@
 
 ### Deployment
 - Deployed successfully to Vercel
+
+## Oct. 26th - Nov. 1st, 2026
+
+### Visual Design and CSS Organization
+
+Introduced CSS custom properties for the application's visual identity:
+  - Charcoal: `#353535`
+  - Slate blue: `#465766`
+  - Sunset orange: `#c96a32`
+  - Parchment: `#e7e4dd`
+  - Warm cream: `#e8d2a8`
+  - Sky blue: `#668fa8`
+  - Sage green: `#657261`
+- Refined the compact header and ZIP-code search controls.
+- Added responsive CSS adjustments for narrower viewports.
+
+### Map and Resource Markers
+
+- Implemented custom sunset-colored resource markers using Leaflet `divIcon` elements.
+- Added a slate-blue map dimming overlay.
+- Added custom geographic labels to reinforce the map-first design.
+- Developed a radial spotlight effect intended to highlight selected resources and ZIP-code search locations.
+- Connected spotlight positioning to map movement and zoom events.
+- Investigated Leaflet pane stacking and positioning conflicts affecting marker visibility.
+
+### Resource Information Cards
+
+- Replaced marker-attached popups with a separate resource information card.
+- Positioned the card in the upper-right area of the map.
+- Added a close control.
+- Organized essential resource details into a clearer visual hierarchy.
+- Retained expandable secondary information.
+- Connected marker selection to resource-card display and map repositioning.
+
+### Resource Filters and Search
+
+- Repositioned the resource-type filter panel to the lower-right corner.
+- Organized filter options into two columns.
+- Retained combined ZIP-code and resource-type filtering.
+- Preserved the five-kilometer ZIP-code search radius.
+- Retained search validation, clear-search functionality, and user-facing status messages.
+
+### Troubleshooting
+
+- Corrected mismatched HTML element identifiers and missing interface elements.
+- Resolved JavaScript errors affecting city-label generation, resource-card controls, and distance calculations.
+- Corrected spotlight radius calculations.
+- Investigated CSS stacking contexts and Leaflet's internal map panes.
+- Verified the primary map, marker-selection, search, and filtering interactions during local testing.
+
+### Logo & Favicon
+
+- Created assets folder
+- Added images and updated index.html and styles.css
