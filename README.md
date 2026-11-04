@@ -156,3 +156,9 @@ Introduced CSS custom properties for the application's visual identity:
 - Adjusted city-label positioning (Goodyear & Avondale) to reduce overlap and improve alignment.
 - Added a minimum zoom level to prevent excessive zooming out and marker crowding.
 - Consolidated frontend files into `/public`, eliminating duplicate files between local development and Vercel deployment.
+
+## Nov. 4th, 2026
+
+## Assignment Adjustment
+
+- Added a meta tag for SEO / improve Chrome Lighthouse rating.
