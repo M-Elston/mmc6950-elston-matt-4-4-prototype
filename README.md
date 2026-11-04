@@ -144,3 +144,15 @@ Introduced CSS custom properties for the application's visual identity:
 
 - Created assets folder
 - Added images and updated index.html and styles.css
+
+## Nov. 2nd - Nov. 3rd, 2026
+
+### Troubleshooting
+
+- Corrected dimmed markers, they now remain visible above the map overlay and geographically anchored during panning and zooming.
+- Improved spotlight positioning, radius scaling, and smooth zoom animations while preserving feathered edges.
+- Changed the map overlay to solid slate blue to reduce visual clutter.
+- Expanded Arizona city labels and moved their coordinates into a separate JSON file for easier maintenance.
+- Adjusted city-label positioning (Goodyear & Avondale) to reduce overlap and improve alignment.
+- Added a minimum zoom level to prevent excessive zooming out and marker crowding.
+- Consolidated frontend files into `/public`, eliminating duplicate files between local development and Vercel deployment.

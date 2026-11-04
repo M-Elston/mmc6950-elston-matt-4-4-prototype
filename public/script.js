@@ -1,5 +1,6 @@
 const map = L.map('map', {
-    zoomControl: true
+    minZoom: 7,
+    maxZoom: 18
 }).setView([33.4484, -112.0740], 12);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -9,17 +10,32 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 const mapContainer = map.getContainer();
 
+map.createPane('dimmingPane');
+map.getPane('dimmingPane').style.zIndex = 450;
+map.getPane('dimmingPane').style.pointerEvents = 'none';
+
 const dimmingLayer = document.createElement('div');
 dimmingLayer.id = 'map-dimming';
 dimmingLayer.setAttribute('aria-hidden', 'true');
-map.getContainer().appendChild(dimmingLayer);
+map.getPane('dimmingPane').appendChild(dimmingLayer);
+
+function positionDimmingLayer() {
+    const origin = map.containerPointToLayerPoint([0, 0]);
+    const size = map.getSize();
+
+    L.DomUtil.setPosition(dimmingLayer, origin);
+
+    dimmingLayer.style.width = `${size.x}px`;
+    dimmingLayer.style.height = `${size.y}px`;
+}
+
+map.on('move zoom resize', positionDimmingLayer);
+positionDimmingLayer();
 
 const cityLabelLayer = document.createElement('div');
 cityLabelLayer.id = 'city-labels';
 cityLabelLayer.setAttribute('aria-hidden', 'true');
 map.getContainer().appendChild(cityLabelLayer);
-
-
 
 const searchForm = document.getElementById('location-search');
 const zipInput = document.getElementById('zip-code');
@@ -41,25 +57,57 @@ let searchCenter = null;
 let selectedResource = null;
 let spotlight = null;
 
-const cities = [
-    { name: 'Phoenix', lat: 33.4484, lng: -112.0740 },
-    { name: 'Glendale', lat: 33.5387, lng: -112.1860 },
-    { name: 'Scottsdale', lat: 33.4942, lng: -111.9261 },
-    { name: 'Tempe', lat: 33.4255, lng: -111.9400 },
-    { name: 'Mesa', lat: 33.4152, lng: -111.8315 },
-    { name: 'Paradise Valley', lat: 33.5312, lng: -111.9426 },
-    { name: 'Chandler', lat: 33.3062, lng: -111.8413 },
-    { name: 'Peoria', lat: 33.5806, lng: -112.2374 },
-    { name: 'Gilbert', lat: 33.3528, lng: -111.7890 }
-];
+let cities = [];
 
-const cityElements = cities.map(city => {
-    const element = document.createElement('span');
-    element.className = 'city-label';
-    element.textContent = city.name;
-    cityLabels.appendChild(element);
-    return { ...city, element };
-});
+async function loadCities() {
+    try {
+        const response = await fetch('/assets/city-coordinates.json');
+
+        if (!response.ok) {
+            throw new Error(`Unable to load cities: ${response.status}`);
+        }
+
+        cities = await response.json();
+        createCityLabels();
+        updateCityLabels();
+
+    } catch (error) {
+        console.error('Error loading city coordinates:', error);
+    }
+}
+
+let cityElements = [];
+
+function createCityLabels() {
+    cityLabels.replaceChildren();
+
+    cityElements = cities.map(city => {
+        const element = document.createElement('span');
+        element.className = 'city-label';
+        element.textContent = city.name;
+        cityLabels.appendChild(element);
+
+        return { ...city, element };
+    });
+}
+
+async function loadCities() {
+    try {
+        const response = await fetch('/assets/city-coordinates.json');
+
+        if (!response.ok) {
+            throw new Error(`Unable to load cities: ${response.status}`);
+        }
+
+        cities = await response.json();
+
+        createCityLabels();
+        updateCityLabels();
+
+    } catch (error) {
+        console.error('Error loading city coordinates:', error);
+    }
+}
 
 function escapeHTML(value) {
     return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -138,10 +186,9 @@ function renderSpotlight() {
         return;
     }
 
-    const { x, y, radius } = spotlight;
-
     const gradient = `radial-gradient(
-        circle ${radius}px at ${x}px ${y}px,
+        circle var(--spotlight-radius)
+        at var(--spotlight-x) var(--spotlight-y),
         transparent 0%,
         transparent 70%,
         black 100%
@@ -149,6 +196,11 @@ function renderSpotlight() {
 
     dimming.style.webkitMaskImage = gradient;
     dimming.style.maskImage = gradient;
+
+    dimming.style.setProperty('--spotlight-x', `${spotlight.x}px`);
+    dimming.style.setProperty('--spotlight-y', `${spotlight.y}px`);
+    dimming.style.setProperty('--spotlight-radius', `${spotlight.radius}px`);
+
     updateCityLabels();
 }
 
@@ -163,11 +215,8 @@ function setSpotlight(lat, lng, radiusMeters) {
 
     const edgePoint = map.latLngToContainerPoint(destination);
 
-    const radius = Math.max(
-        75,
-        Math.abs(centerPoint.y - edgePoint.y)
-    );
-
+    const radius = Math.abs(centerPoint.y - edgePoint.y);
+    
     spotlight = {
         x: centerPoint.x,
         y: centerPoint.y,
@@ -192,7 +241,60 @@ function refreshSpotlight() {
     }
 }
 
-map.on('move zoom resize', refreshSpotlight);
+function animateSpotlightZoom(event) {
+    if (!selectedResource && !searchCenter) return;
+
+    const lat = selectedResource
+        ? selectedResource.latitude
+        : searchCenter.lat;
+
+    const lng = selectedResource
+        ? selectedResource.longitude
+        : searchCenter.lng;
+
+    const radiusMeters = selectedResource ? 1800 : 5000;
+
+    const center = L.latLng(lat, lng);
+
+    const destination = L.latLng(
+        lat + (radiusMeters / 111320),
+        lng
+    );
+
+    const mapCenter = map.project(event.center, event.zoom);
+    const mapSize = map.getSize().divideBy(2);
+
+    const centerPoint = map.project(center, event.zoom)
+        .subtract(mapCenter)
+        .add(mapSize);
+
+    const edgePoint = map.project(destination, event.zoom)
+        .subtract(mapCenter)
+        .add(mapSize);
+
+    dimming.classList.add('zoom-animating');
+
+    spotlight = {
+        x: centerPoint.x,
+        y: centerPoint.y,
+        radius: Math.abs(centerPoint.y - edgePoint.y)
+    };
+
+    renderSpotlight();
+}
+
+map.on('move zoom resize', () => {
+    if (!dimming.classList.contains('zoom-animating')) {
+        refreshSpotlight();
+    }
+});
+
+map.on('zoomanim', animateSpotlightZoom);
+
+map.on('zoomend', () => {
+    dimming.classList.remove('zoom-animating');
+    refreshSpotlight();
+});
 
 const pinIcon = L.divIcon({
     className: 'resource-pin',
@@ -439,5 +541,6 @@ filterCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', updateResourceMarkers);
 });
 
+loadCities();
 loadFoodResources();
 updateCityLabels();
