@@ -399,10 +399,18 @@ function showResourceCard(resource) {
     `;
 
     card.hidden = false;
+    document.documentElement.style.setProperty(
+        '--mobile-card-height',
+        `${card.getBoundingClientRect().height}px`
+    );
 }
 
 function closeResourceCard() {
     card.hidden = true;
+    document.documentElement.style.setProperty(
+        '--mobile-card-height',
+        '0px'
+    );
     cardContent.innerHTML = '';
     selectedResource = null;
     refreshSpotlight();

@@ -466,6 +466,7 @@ button, input {
 @media (max-width: 600px) {
     :root {
         --header-height: 60px;
+        --mobile-card-height: 0px;
     }
 
     .header {
@@ -522,10 +523,14 @@ button, input {
     }
 
     #resource-filters {
-        top: 100px;
+        position: fixed;
+        top: auto;
         right: 12px;
-        bottom: auto;
+        left: auto;
+        bottom: 12px;
+        bottom: calc(28px + var(--mobile-card-height, 0px));
         width: 72px;
+        max-width: calc(100vw - 24px);
         padding: 8px;
         box-sizing: border-box;
     }
@@ -570,5 +575,9 @@ button, input {
         grid-template-columns: 1fr;
         gap: 8px;
         margin-top: 10px;
-    }   
+    }
+
+    #map .leaflet-bottom.leaflet-right {
+        bottom: calc(6px + var(--mobile-card-height, 0px));
+    }
 }
