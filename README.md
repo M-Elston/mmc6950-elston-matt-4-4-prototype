@@ -157,32 +157,26 @@ Introduced CSS custom properties for the application's visual identity:
 - Added a minimum zoom level to prevent excessive zooming out and marker crowding.
 - Consolidated frontend files into `/public`, eliminating duplicate files between local development and Vercel deployment.
 
-## Nov. 4th, 2026
+## Nov. 4th, 2026 - Nov. 7th, 2026
 
 ## Assignment Adjustment
 
 - Added a meta description tag for SEO / improve Chrome Lighthouse rating.
 
-## Mobile/Tablet Test UX To-Do
+## Mobile Adjustments
 
-### Header
+- Centered logo lockup
+- Reduce header size
+- Relocated ZIP search, search button, clear search button outside of header
+- Changed "Clear Search" to "Clear" to reduce obviousness and redundancy
+- Relocated to lower right viewport
+- Made collapsable w/icon at mobile resolution
+- Removed clear spotlight when filtering to maintain user focus
+- Opted to keep search message as-is now that filtering has been relocated
+- Moved info card to bottom of viewport, persist until cleared, new marker selected, new search
+- Attribution placement adjusted for relocated info card and filtering
+- Increased auto zoom upon marker selection to maintain user focus
 
-- Center logo lockup
-- Reduce header size or allow scroll (off screen) unless already at top of viewport
-
-### Search Message
-
-- Make disappear after successful search, persist error messages.
-
-### Filter Panel
-
-- Make collapsable/expandable
-- Possibly move to upper right viewport.
-
-### Info Card
-
-- Move to bottom of viewport, persist until cleared, new marker selected, new search.
-
-### Zoom Limit
+### To Do / Consider
 
 - Increase zoom-out cap on mobile/tablet
