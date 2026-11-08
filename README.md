@@ -161,4 +161,28 @@ Introduced CSS custom properties for the application's visual identity:
 
 ## Assignment Adjustment
 
-- Added a meta tag for SEO / improve Chrome Lighthouse rating.
+- Added a meta description tag for SEO / improve Chrome Lighthouse rating.
+
+## Mobile/Tablet Test UX To-Do
+
+### Header
+
+- Center logo lockup
+- Reduce header size or allow scroll (off screen) unless already at top of viewport
+
+### Search Message
+
+- Make disappear after successful search, persist error messages.
+
+### Filter Panel
+
+- Make collapsable/expandable
+- Possibly move to upper right viewport.
+
+### Info Card
+
+- Move to bottom of viewport, persist until cleared, new marker selected, new search.
+
+### Zoom Limit
+
+- Increase zoom-out cap on mobile/tablet

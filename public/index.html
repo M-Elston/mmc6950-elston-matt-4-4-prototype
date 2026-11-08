@@ -42,7 +42,7 @@
             autocomplete="postal-code"
         >
         <button type="submit" class="search-button">Search</button>
-        <button type="button" id="clear-search">Clear Search</button>
+        <button type="button" id="clear-search">Clear</button>
     </form>
 </header>
 
@@ -61,7 +61,18 @@
 
     <aside id="resource-filters" aria-label="Resource filters">
         <h2>Filter by Type</h2>
-        <div class="filter-options">
+
+        <button
+            id="filter-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="filter-options"
+        >
+            <span class="filter-toggle-icon" aria-hidden="true">☷</span>
+            <span>Filters</span>
+        </button>
+
+        <div class="filter-options" id="filter-options">
             <label><input type="checkbox" value="Food Bank">Food Bank</label>
             <label><input type="checkbox" value="Food Pantry">Food Pantry</label>
             <label><input type="checkbox" value="Community Meal">Community Meal</label>

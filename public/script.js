@@ -44,6 +44,13 @@ const clearSearchButton = document.getElementById('clear-search');
 const filterCheckboxes = document.querySelectorAll(
     '#resource-filters input[type="checkbox"]'
 );
+const filterToggle = document.getElementById('filter-toggle');
+const resourceFilters = document.getElementById('resource-filters');
+
+filterToggle.addEventListener('click', () => {
+    const isOpen = resourceFilters.classList.toggle('is-open');
+    filterToggle.setAttribute('aria-expanded', String(isOpen));
+});
 
 const dimming = document.getElementById('map-dimming');
 const cityLabels = document.getElementById('city-labels');
@@ -241,6 +248,32 @@ function refreshSpotlight() {
     }
 }
 
+function centerSelectedMarker(resource) {
+    const zoom = 14;
+    const markerPosition = L.latLng(
+        resource.latitude,
+        resource.longitude
+    );
+
+    if (window.innerWidth > 600) {
+        map.setView(markerPosition, zoom, { animate: true });
+        return;
+    }
+
+    const cardHeight = card.getBoundingClientRect().height;
+
+    const offset = cardHeight / 2;
+
+    const projected = map.project(markerPosition, zoom);
+
+    const adjustedCenter = map.unproject(
+        projected.add([0, offset]),
+        zoom
+    );
+
+    map.setView(adjustedCenter, zoom, { animate: true });
+}
+
 function animateSpotlightZoom(event) {
     if (!selectedResource && !searchCenter) return;
 
@@ -400,7 +433,6 @@ function updateResourceMarkers() {
             if (!map.hasLayer(marker)) marker.addTo(map);
         } else {
             if (map.hasLayer(marker)) map.removeLayer(marker);
-            if (selectedResource === resource) closeResourceCard();
         }
     });
 }
@@ -421,9 +453,8 @@ function createResourceMarkers() {
         marker.on('click', () => {
             selectedResource = resource;
             showResourceCard(resource);
-            map.panTo([resource.latitude, resource.longitude], {
-                animate: true
-            });
+
+            centerSelectedMarker(resource);
             refreshSpotlight();
         });
 

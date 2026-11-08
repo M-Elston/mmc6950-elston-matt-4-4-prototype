@@ -396,6 +396,10 @@ button, input {
     color: var(--slate);
     font-size: 11px;
     cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .filter-options input {
@@ -405,6 +409,10 @@ button, input {
     flex-shrink: 0;
     accent-color: var(--slate);
     cursor: pointer;
+}
+
+#filter-toggle {
+    display: none;
 }
 
 #search-message {
@@ -457,34 +465,110 @@ button, input {
 
 @media (max-width: 600px) {
     :root {
-        --header-height: 100px;
+        --header-height: 60px;
     }
 
     .header {
         flex-direction: column;
         justify-content: center;
-        align-items: flex-start;
-        gap: 8px;
+        align-items: center;
+        gap: 0;
+        padding: 0 12px;
     }
 
     #location-search {
-        margin-left: 0;
+        position: absolute;
+        top: calc(100% + 12px);
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        margin: 0;
+        justify-content: center;
+        gap: 6px;
+        z-index: 1200;
     }
 
-    #resource-filters {
-        right: 10px;
-        bottom: 12px;
-        width: 230px;
+    #search-message {
+        top: 58px;
+        width: max-content;
+        max-width: calc(100% - 24px);
+        box-sizing: border-box;
+    }
+
+    .leaflet-top.leaflet-left {
+        top: 100px;
+    }
+
+    .leaflet-top.leaflet-left .leaflet-control-zoom {
+        margin-top: 0;
     }
 
     .resource-card {
-        top: 10px;
-        right: 10px;
-        width: min(320px, calc(100% - 20px));
-        max-height: 45%;
+        position: fixed;
+        top: auto;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        max-height: 45dvh;
+        overflow-y: auto;
+        box-sizing: border-box;
+        border-radius: 16px 16px 0 0;
+        z-index: 900;
     }
 
     .city-label {
         font-size: 15px;
     }
+
+    #resource-filters {
+        top: 100px;
+        right: 12px;
+        bottom: auto;
+        width: 72px;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    #resource-filters h2 {
+        display: none;
+    }
+
+    #filter-toggle {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        width: 100%;
+        min-height: 44px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        color: var(--charcoal);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    #filter-toggle .filter-toggle-icon {
+        font-size: 24px;
+        line-height: 1;
+    }
+
+    #resource-filters .filter-options {
+        display: none;
+    }
+
+    #resource-filters.is-open {
+        width: auto;
+        padding: 10px 12px;
+    }
+
+    #resource-filters.is-open .filter-options {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 10px;
+    }   
 }
