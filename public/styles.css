@@ -36,7 +36,7 @@ body {
     margin: 0;
     width: 100%;
     height: 100%;
-    font-family: "Pill Gothic 900mg", Arial, sans-serif;
+    font-family: "pill-gothic-900mg", Arial, sans-serif;
     color: var(--charcoal)
 }
 
@@ -579,5 +579,190 @@ button, input {
 
     #map .leaflet-bottom.leaflet-right {
         bottom: calc(6px + var(--mobile-card-height, 0px));
+    }
+}
+
+/*Intro Modal*/
+
+.intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(53, 53, 53, 0.55);
+}
+
+.intro-overlay[hidden] {
+    display: none;
+}
+
+.intro-card {
+    position: relative;
+    width: 100%;
+    max-width: 385px;
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    padding: 18px;
+    border-radius: 16px;
+    background: var(--parchment);
+    color: var(--charcoal);
+    text-align: center;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+}
+
+.intro-card:focus {
+    outline: none;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.intro-description {
+    margin: 8px 0 20px;
+    font-size: 14px;
+    line-height: 1.65;
+    font-weight: 400;
+}
+
+.intro-brand-good,
+.intro-brand-wren {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.intro-brand-good {
+    color: var(--slate);
+}
+
+.intro-brand-wren {
+    color: var(--sunset);
+}
+
+.intro-begin {
+    display: inline-block;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 9px;
+    background: var(--sunset);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.intro-begin:hover {
+    filter: brightness(0.94);
+    transform: translateY(-1px);
+}
+
+.intro-begin:focus-visible {
+    outline: 3px solid var(--slate);
+    outline-offset: 3px;
+}
+
+.intro-howto {
+    margin: 22px 0 12px;
+    color: var(--sunset);
+    font-size: 19px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.intro-instructions {
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.intro-instructions p {
+    margin: 6px 0;
+}
+
+.intro-or {
+    color: var(--sunset);
+    font-weight: 700;
+}
+
+.intro-bullet {
+    color: var(--sunset);
+    font-weight: 700;
+    margin-right: 6px;
+}
+
+.mobile-break {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .intro-card {
+        max-width: 420px;
+        padding: 26px 18px 20px;
+    }
+
+    .intro-description {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .intro-break {
+        display: none;
+    }
+
+    .mobile-break {
+        display: initial;
+    }
+
+    .intro-brand-good,
+    .intro-brand-wren {
+        font-size: 14px;
+    }
+
+    .intro-howto {
+        margin-top: 18px;
+    }
+
+    .intro-instructions {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 359px) {
+    .intro-description {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .intro-brand-good,
+    .intro-brand-wren {
+        font-size: 13px;
+    }
+
+    .intro-card {
+        padding: 20px 8px;
+    }
+
+    .intro-break,
+    .mobile-break {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .intro-begin {
+        transition: none;
     }
 }

@@ -159,11 +159,11 @@ Introduced CSS custom properties for the application's visual identity:
 
 ## Nov. 4th, 2026 - Nov. 7th, 2026
 
-## Assignment Adjustment
+### Assignment Adjustment
 
 - Added a meta description tag for SEO / improve Chrome Lighthouse rating.
 
-## Mobile Adjustments
+### Mobile Adjustments
 
 - Centered logo lockup
 - Reduce header size
@@ -177,6 +177,15 @@ Introduced CSS custom properties for the application's visual identity:
 - Attribution placement adjusted for relocated info card and filtering
 - Increased auto zoom upon marker selection to maintain user focus
 
-### To Do / Consider
+## Nov. 10th, 2026 - Nov. 11th, 2026
 
-- Increase zoom-out cap on mobile/tablet
+### Intro Modal & Typography
+
+- Added responsive intro modal with a welcome message and usage instructions
+- Added a **Click to Begin** CTA button, with backdrop-click and Escape-key closure
+- Implemented keyboard focus management and background interaction restrictions while modal is open
+- Added Adobe Fonts to display **Pill Gothic 900mg** throughout the application
+- Refined intro text formatting with responsive line breaks for desktop and mobile
+- Added mobile styling adjustments for smaller screens, including 320px viewports
+- Updated **How To** instructions with clearer **or** and **then** transitions
+- Left-aligned usage instructions and added sunset-colored bullets

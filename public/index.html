@@ -10,6 +10,7 @@
         content="An interactive map-first Arizona food resource locator."
     />
 
+    <link rel="stylesheet" href="https://use.typekit.net/dmn3nyw.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -19,73 +20,121 @@
 
 <body>
 
+    <div id="intro-overlay" class="intro-overlay">
+        <section
+            id="intro-card"
+            class="intro-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="intro-heading"
+            tabindex="-1"
+        >
+            <h2 id="intro-heading" class="visually-hidden">
+                Welcome to The Good Wren
+            </h2>
 
-<header class="header">
-    <div class="brand">
-        <picture class="brand-picture">
-            <source media="(max-width: 900px)" srcset="/assets/wrenlogo-submark-icon.png">
-            <img src="/assets/wrenlogo-icon.png" alt="" class="brand-logo">
-        </picture>
+            <p class="intro-description">
+                Whether it is a food bank, a food pantry,
+                or a<br class="intro-break">
+                <br class="mobile-break">
+                community meal,
+                <span class="intro-brand-good">The Good</span>
+                <span class="intro-brand-wren">Wren</span>
+                is an<br class="intro-break">
+                <br class="mobile-break">
+                Arizona-based interactive
+                map-first<br class="intro-break">
+                <br class="mobile-break">
+                food assistance locator designed<br class="intro-break">
+                <br class="mobile-break">
+                to help you find the resources<br class="intro-break">
+                <br class="mobile-break">
+                you're looking for.
+            </p>
 
-        <h1>The Good <span>Wren</span></h1>
+            <button id="intro-begin" class="intro-begin" type="button">
+                Click to Begin
+            </button>
+
+            <h3 class="intro-howto">How To:</h3>
+
+            <div class="intro-instructions">
+                <p><span class="intro-bullet">&bull;</span> Search an Arizona ZIP code</p>
+                <p class="intro-or">- or -</p>
+                <p><span class="intro-bullet">&bull;</span> Pan and zoom to a desired city</p>
+                <p class="intro-or">- then -</p>
+                <p><span class="intro-bullet">&bull;</span> Select nearby markers for resource details</p>
+                <p><span class="intro-bullet">&bull;</span> Close details with "X" or select Clear to start over</p>
+            </div>
+        </section>
     </div>
 
-    <form id="location-search">
-        <label for="zip-code">Search by ZIP Code:</label>
-        <input
-            type="text"
-            id="zip-code"
-            name="zip-code"
-            inputmode="numeric"
-            maxlength="5"
-            placeholder="ex. 85331"
-            autocomplete="postal-code"
-        >
-        <button type="submit" class="search-button">Search</button>
-        <button type="button" id="clear-search">Clear</button>
-    </form>
-</header>
+    <header class="header">
+        <div class="brand">
+            <picture class="brand-picture">
+                <source media="(max-width: 900px)" srcset="/assets/wrenlogo-submark-icon.png">
+                <img src="/assets/wrenlogo-icon.png" alt="" class="brand-logo">
+            </picture>
 
-<main class="map-container">
-
-    <div id="map" aria-label="Map of food assistance resources"></div>
-
-    <aside id="resource-card" class="resource-card" hidden 
-        aria-label="Selected resource information">
-        
-        <button id="close-resource-card" type="button"
-            aria-label="Close resource information">x</button>
-        
-        <div id="resource-card-content"></div>
-    </aside>
-
-    <aside id="resource-filters" aria-label="Resource filters">
-        <h2>Filter by Type</h2>
-
-        <button
-            id="filter-toggle"
-            type="button"
-            aria-expanded="false"
-            aria-controls="filter-options"
-        >
-            <span class="filter-toggle-icon" aria-hidden="true">☷</span>
-            <span>Filters</span>
-        </button>
-
-        <div class="filter-options" id="filter-options">
-            <label><input type="checkbox" value="Food Bank">Food Bank</label>
-            <label><input type="checkbox" value="Food Pantry">Food Pantry</label>
-            <label><input type="checkbox" value="Community Meal">Community Meal</label>
-            <label><input type="checkbox" value="Food Distribution">Food Distribution</label>
+            <h1>The Good <span>Wren</span></h1>
         </div>
-    </aside>
 
-    <div id="search-message" role="status" aria-live="polite"></div>
-</main>
+        <form id="location-search">
+            <label for="zip-code">Search by ZIP Code:</label>
+            <input
+                type="text"
+                id="zip-code"
+                name="zip-code"
+                inputmode="numeric"
+                maxlength="5"
+                placeholder="ex. 85331"
+                autocomplete="postal-code"
+            >
+            <button type="submit" class="search-button">Search</button>
+            <button type="button" id="clear-search">Clear</button>
+        </form>
+    </header>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
-<script src="script.js"></script>
+    <main class="map-container">
+
+        <div id="map" aria-label="Map of food assistance resources"></div>
+
+        <aside id="resource-card" class="resource-card" hidden 
+            aria-label="Selected resource information">
+            
+            <button id="close-resource-card" type="button"
+                aria-label="Close resource information">x</button>
+            
+            <div id="resource-card-content"></div>
+        </aside>
+
+        <aside id="resource-filters" aria-label="Resource filters">
+            <h2>Filter by Type</h2>
+
+            <button
+                id="filter-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="filter-options"
+            >
+                <span class="filter-toggle-icon" aria-hidden="true">☷</span>
+                <span>Filters</span>
+            </button>
+
+            <div class="filter-options" id="filter-options">
+                <label><input type="checkbox" value="Food Bank">Food Bank</label>
+                <label><input type="checkbox" value="Food Pantry">Food Pantry</label>
+                <label><input type="checkbox" value="Community Meal">Community Meal</label>
+                <label><input type="checkbox" value="Food Distribution">Food Distribution</label>
+            </div>
+        </aside>
+
+        <div id="search-message" role="status" aria-live="polite"></div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+    <script src="script.js"></script>
 </body>
 </html>

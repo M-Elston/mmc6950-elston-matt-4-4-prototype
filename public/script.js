@@ -98,24 +98,6 @@ function createCityLabels() {
     });
 }
 
-async function loadCities() {
-    try {
-        const response = await fetch('/assets/city-coordinates.json');
-
-        if (!response.ok) {
-            throw new Error(`Unable to load cities: ${response.status}`);
-        }
-
-        cities = await response.json();
-
-        createCityLabels();
-        updateCityLabels();
-
-    } catch (error) {
-        console.error('Error loading city coordinates:', error);
-    }
-}
-
 function escapeHTML(value) {
     return String(value ?? '').replace(/[&<>"']/g, char => ({
         '&': '&amp;',
@@ -583,3 +565,44 @@ filterCheckboxes.forEach(checkbox => {
 loadCities();
 loadFoodResources();
 updateCityLabels();
+
+/*Intro Modal*/
+
+const introOverlay = document.getElementById('intro-overlay');
+const introCard = document.getElementById('intro-card');
+const introBegin = document.getElementById('intro-begin');
+
+const appHeader = document.querySelector('.header');
+const appMain = document.querySelector('.map-container');
+
+appHeader.inert = true;
+appMain.inert = true;
+introCard.focus();
+
+function closeIntroModal() {
+    introOverlay.hidden = true;
+    appHeader.inert = false;
+    appMain.inert = false;
+    zipInput.focus();
+}
+
+introBegin.addEventListener('click', closeIntroModal);
+
+introOverlay.addEventListener('click', event => {
+    if (event.target === introOverlay) {
+        closeIntroModal();
+    }
+});
+
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !introOverlay.hidden) {
+        closeIntroModal();
+    }
+});
+
+introOverlay.addEventListener('keydown', event => {
+    if (event.key === 'Tab') {
+        event.preventDefault();
+        introBegin.focus();
+    }
+});
