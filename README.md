@@ -1,4 +1,23 @@
-# The Good Wren - Food Assistance Locator (Formerly, Food Finder) Prototype
+# The Good Wren (Formerly "Food Finder") - Food Assistance Locator Prototype
+The Good Wren is intended to be an Arizona-based interactive map-first food assistance locator designed to help users find the resources they may be looking for. 
+
+
+## Conceptualization
+
+### Moodboard
+<img src="public/docs/images/moodboard.jpg" alt="Moodboard" width="500">
+
+### Wireframes
+
+#### Desktop
+<img src="public/docs/images/mvpWireframe1.jpg" alt="Desktop Wireframe 1" width="400">
+<img src="public/docs/images/mvpWireframe1-5.jpg" alt="Desktop Wireframe 2" width="400">
+
+#### Tablet
+<img src="public/docs/images/mvpWireframe2.jpg" alt="Tablet Wireframe" width="400">
+
+#### Mobile
+<img src="public/docs/images/mvpWireframe3.jpg" alt="Mobile Wireframe" width="400">
 
 ## Prototype Flow
 - Users search AZ ZIP Code, explore matching resources on the map, select a resource marker, review its information card.
@@ -55,6 +74,12 @@
 - Added responsive styling for smaller screens
 - Added and explored automatic map panning to improve popup card visibility (will need to return to this in future developement)
 
+### Results
+
+<img src="public/docs/images/orig-layout.jpg" alt="Original Layout" width="400">
+<img src="public/docs/images/orig-spotlight.jpg" alt="Original Spotlight" width="175">
+<img src="public/docs/images/orig-marker-card.jpg" alt="Original Marker Card" width="150">
+
 ## Oct. 4th - 18th, 2026
 
 ### Database & Seed Data
@@ -91,7 +116,30 @@
 ### Deployment
 - Deployed successfully to Vercel
 
+### Results
+
+<img src="public/docs/images/city-coords-ss.jpg" alt="City Coordinates" width="270">
+<img src="public/docs/images/new-layout.jpg" alt="New Layout" width="400">
+<img src="public/docs/images/hollow-spotlight.jpg" alt="Hollowed Spotlight" width="150">
+
+
 ## Oct. 26th - Nov. 1st, 2026
+
+### Style Guide
+
+<img src="public/docs/images/styleguide.jpg" alt="Style Guide" width="600">
+
+### Mockups
+
+<img src="public/docs/images/mockups-desktop.jpg" alt="Desktop Mockup" width="300">
+<img src="public/docs/images/mockups-tablet.jpg" alt="Tablet Mockup" width="300">
+<img src="public/docs/images/mockups-mobile.jpg" alt="Mobile Mockup" width="150">
+
+### Logo Design
+
+<img src="public/docs/images/wrenlogo-icon.png" alt="Main Logo" width="100">
+<img src="public/docs/images/wrenlogo-submark-icon.png" alt="Submark Logo" width="50">
+<img src="public/docs/images/wrenlogo-favicon-icon.png" alt="Favicon Logo" width="15">
 
 ### Visual Design and CSS Organization
 
@@ -189,3 +237,10 @@ Introduced CSS custom properties for the application's visual identity:
 - Added mobile styling adjustments for smaller screens, including 320px viewports
 - Updated **How To** instructions with clearer **or** and **then** transitions
 - Left-aligned usage instructions and added sunset-colored bullets
+
+## Final Prototype
+
+<img src="public/docs/images/final-desktop.jpg" alt="Final Desktop" width="300">
+<img src="public/docs/images/final-desktop-selection.jpg" alt="Final Desktop Marker Selection" width="300">
+<img src="public/docs/images/final-desktop-zipSearch.jpg" alt="Final Desktop ZIP Search" width="300">
+<img src="public/docs/images/final-mobile-selection.jpg" alt="Final Desktop ZIP Search" width="250">
